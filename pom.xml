@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github</groupId>
+    <artifactId>mini_db_query</artifactId>
+    <version>0.0.1</version>
+
+    <name>mini db query maven project</name>
+
+    <description> validate, initialize, generate-sources, process-sources,
+        generate-resources, process-resources, compile, process-classes,
+        generate-test-sources, process-test-sources, generate-test-resources,
+        process-test-resources, test-compile, process-test-classes, test,
+        prepare-package, package, pre-integration-test, integration-test,
+        post-integration-test, verify, install, deploy
+    </description>
+
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+
+        <!-- project-related properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jdk.version>1.8</jdk.version>
+        <java.version>1.8</java.version>
+
+        <!-- plugin-related properties -->
+        <toolchains.version>1.1</toolchains.version>
+        <resources.version>3.1.0</resources.version>
+        <compiler.version>3.8.1</compiler.version>
+        <source.version>3.0.1</source.version>
+        <javadoc.version>3.1.0</javadoc.version>
+        <deploy.version>3.0.0-M1</deploy.version>
+        <assembly.version>3.1.1</assembly.version>
+        <surefire.version>3.0.0-M3</surefire.version>
+        <jar.version>3.1.1</jar.version>
+        <dependency.version>3.1.1</dependency.version>
+        <clean.version>3.1.0</clean.version>
+        <shade.version>3.2.1</shade.version>
+
+        <!-- dependency-related properties -->
+        <mysql.version>5.1.47</mysql.version>
+        <oracle.connector.version>11.1.0</oracle.connector.version>
+
+        <main.class>com.github.db.MiniDBQuery</main.class>
+        <os.detected.classifier>windows</os.detected.classifier>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!--dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>jdbc-driver</artifactId>
+            <version>${oracle.connector.version}</version>
+        </dependency-->
+
+    </dependencies>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+
+        <!-- To define the plugin version in your parent POM -->
+        <pluginManagement>
+            <plugins>
+                <!-- toolchains -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-toolchains-plugin</artifactId>
+                    <version>${toolchains.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>toolchain</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <toolchains>
+                            <jdk>
+                                <version>${jdk.version}</version>
+                                <vendor>sun</vendor>
+                            </jdk>
+                        </toolchains>
+                    </configuration>
+                </plugin>
+
+                <!-- compiler -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${compiler.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                    </configuration>
+                </plugin>
+
+                <!-- source -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${source.version}</version>
+                </plugin>
+
+                <!-- javadoc -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${javadoc.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <charset>UTF-8</charset>
+                        <locale>en_US</locale>
+                        <header>${project.name} ${project.version}</header>
+                        <footer>http://www.yusheng.com/</footer>
+                        <windowtitle>${project.name} ${project.version}</windowtitle>
+                        <bottom>Copyright &amp;#169; 2020&amp;#x2025;{currentYear} Yu Sheng All rights reserved.</bottom>
+                        <show>protected</show>
+                        <source>8</source>
+                        <doclint>all,-reference</doclint>
+                    </configuration>
+                </plugin>
+
+                <!-- resources -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${resources.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <nonFilteredFileExtensions>
+                            <!-- 过滤后缀不需要转码的文件,后缀名.png .tiff -->
+                            <nonFilteredFileExtension>*.png</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>*.tiff</nonFilteredFileExtension>
+                        </nonFilteredFileExtensions>
+                    </configuration>
+                </plugin>
+
+                <!-- deploy -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${deploy.version}</version>
+                </plugin>
+
+                <!-- jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${jar.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>lib/</exclude>
+                            <exclude>bin/</exclude>
+                            <exclude>*.bat</exclude>
+                        </excludes>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix>
+                                <mainClass>${main.class}</mainClass>
+                            </manifest>
+                            <manifestEntries>
+                                <Class-Path>.</Class-Path>
+                            </manifestEntries>
+                            <!-- 去除pom.xml和pom.properties -->
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <!-- surefire:执行测试用例默认插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <argLine>-Dfile.encoding=UTF-8</argLine>
+                        <parallel>methods</parallel>
+                        <threadCount>10</threadCount>
+                        <skipTests>false</skipTests>
+                        <!-- 当有1个测试用例执行失败或发生异常时,跳过后续的其他测试用例 -->
+                        <skipAfterFailureCount>1</skipAfterFailureCount>
+
+                        <!-- 配置是否跳过测试用例执行 -->
+                        <includes>
+                            <include>*/*Test.java</include>
+                        </includes>
+
+                        <!--excludes>
+                            <exclude>*/Test.java</exclude>
+                        </excludes-->
+                    </configuration>
+
+                    <dependencies>
+                        <dependency>
+                            <!-- 明确指定用的是JUnit4.7及以上版本 -->
+                            <groupId>org.apache.maven.surefire</groupId>
+                            <artifactId>surefire-junit4</artifactId>
+                            <version>${surefire.version}</version>
+                        </dependency>
+                    </dependencies>
+
+                </plugin>
+
+                <!-- assembly -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${assembly.version}</version>
+                </plugin>
+
+                <!-- dependency -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${dependency.version}</version>
+                </plugin>
+
+                <!-- clean -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${clean.version}</version>
+                </plugin>
+
+                <!-- shade -->
+                <plugin>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${shade.version}</version>
+                </plugin>
+
+                <!-- Formats your code using google-java-format which follows Google's code style guide. -->
+                <plugin>
+                    <groupId>com.coveo</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>2.8</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.2.1</version>
+                <configuration>
+                    <finalName>${project.artifactId}-all</finalName>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>**/Log4j2Plugins.dat</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${main.class}</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>log4j2.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+
+</project>
